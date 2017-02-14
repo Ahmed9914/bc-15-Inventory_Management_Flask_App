@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% from "form_macros.html" import render_field %}
+
+{% block title %}
+ADD ASSET
+{% endblock %}
+
+
+{% block content %}
+    <article>
+        <h2>FILL IN DETAILS OF THE ASSET TO BE ADDED</h2>
+        <form action="" method="post">
+            {{ form.hidden_tag() }}
+            <table>
+                {{ render_field(form.asset_name, size=50) }}
+                {{ render_field(form.description, size=50) }}
+                {{ render_field(form.serial_no, size=10) }}
+                {{ render_field(form.serial_code, size=10) }}
+                {{ render_field(form.date_bought, size=10) }}
+                {{ render_field(form.colour, size=10) }}
+                {{ render_field(form.add, size=50) }}
+             
+            </table>
+        </form>
+    </article>
+{% endblock %}
+{% block sidebar %}
+{% endblock %}
