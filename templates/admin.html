@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% from "form_macros.html" import render_field %}
+
+{% block title %}
+ADMIN
+{% endblock %}
+
+{% block content %}
+<article>
+    <h3> CHOOSE ONE OF THE FOLLOWING ACTIONS BELOW </h3>
+
+    <ul>
+        <li><a href="#">ADD AN ASSET RECORD</a></li>   
+        <li><a href="#">ASSIGN / UNASSIGN AN ASSET TO A USER</a></li>
+        <li><a href="#">VIEW A LIST</a></li>
+        <li><a href="#">ADD A USER</a></li>
+
+    </ul>
+</article>
+
+{% endblock %}
+{% block sidebar %}
+{% endblock %}
