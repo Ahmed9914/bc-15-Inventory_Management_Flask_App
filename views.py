@@ -25,3 +25,12 @@ def admin_login():
         flash("Signed in successfully as {}".format(username))
         return redirect(request.args.get('next') or url_for('home'))
     return render_template('admin_login.html', form = form)
+
+@app.route('/user_login', methods = ["GET", "POST"])
+def user_login():
+    form = LoginForm()
+    if form.validate_on_submit():
+        username = form.username.data
+        flash("Signed in successfully as {}".format(username))
+        return redirect(request.args.get('next') or url_for('home'))
+    return render_template('user_login.html', form = form)
