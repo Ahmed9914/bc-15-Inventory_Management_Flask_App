@@ -1,6 +1,6 @@
 from __init__ import app, db
 from flask import render_template, url_for, request, redirect, flash
-from forms import LoginForm
+from forms import LoginForm, AssetForm
 from models import *
 
 @app.route('/')
@@ -53,4 +53,22 @@ def super_admin():
 @app.route('/admin')
 def admin():
     return render_template("admin.html")
+
+@app.route('/admin/add_asset', methods = ["GET", "POST"])
+def add_asset():
+    form = AssetForm()
+    if form.validate_on_submit():
+        asset_name = form.asset_name.data
+        description = form.description.data
+        serial_no = form.serial_no.data
+        serial_code = form.serial_code.data
+        colour = form.colour.data
+        date_bought = form.date_bought.data
+        db.session.add(Assets(asset_name=asset_name, description=description,
+                                serial_no=serial_no, serial_code=serial_code,
+                                colour=colour, date_bought=date_bought))
+        db.session.commit()
+        flash("Successfully added {} to the records".format(asset_name))
+        return redirect(url_for('admin'))
+    return render_template('add_asset.html', form = form)
 
