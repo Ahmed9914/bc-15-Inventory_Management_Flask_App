@@ -6,3 +6,5 @@ class LoginForm(Form):
     username = StringField('Username: ', validators=[DataRequired()])
     password = PasswordField('Password: ', validators=[DataRequired()] )
     submit = SubmitField('Sign In: ')
+    create = SubmitField('Create Account: ')
+
