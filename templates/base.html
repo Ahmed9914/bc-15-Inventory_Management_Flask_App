@@ -16,26 +16,24 @@
 
         <div class="header-container">
             <header class="wrapper clearfix">
-                <a href="{{ url_for("index") }}" ><h1 class="title">Thermos </h1></a>
+                <a href="{{ url_for("home") }}"><img src="../static/img/Andela_Logo.jpeg" alt="Andela logo" style="float:left;width:80px;height:80px;"></a>
+                <h1 class="title">***INVENTORY @ ANDELA*** </h1>
+                <h1 class="title"> </h1>
                 <nav>
-                    <ul>
-                        <li><a href="{{ url_for("add") }}">Add URL</a></li>
-                        <li><a href="#">Sign Up</a></li>
-                        {% if current_user.is_authenticated %}
-                            <li><a href="{{ url_for("logout")}}">Sign Out</a></li>
-                        {% else %}
-                            <li><a href="{{ url_for("login")}}">Sign In</a></li>
-                        {% endif %}
+                    <ul align ="right"> 
+                        <li><a href="#">Sign Out</a></li>
+
                     </ul>
                 </nav>
+                
             </header>
         </div>
 
         <div class="main-container">
             <div class="main wrapper clearfix">
 
-                <article class=flashes>
-                    {% with messages = get_flashed_messages() %}
+               <!-- <article class=flashes>
+                     {% with messages = get_flashed_messages() %}
                         {% if messages %}
                             <ul>
                                 {% for message in messages %}
@@ -44,7 +42,7 @@
                             </ul>
                         {% endif %}
                     {% endwith %}
-                </article>
+                </article> -->
 
 
                 {% block content %}Your customised Content Goes here</h1>
@@ -63,7 +61,7 @@
 
         <div class="footer-container">
             <footer class="wrapper">
-                <h3>Thermos is designed by Jxn </h3>
+                <h3>ANDELA INVENTORY MANAGEMENT SYSTEM DESIGNED BY JXN </h3>
                 
             </footer>
         </div>
