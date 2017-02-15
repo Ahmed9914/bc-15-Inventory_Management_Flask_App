@@ -7,7 +7,7 @@ from flask_login import login_required, login_user,logout_user, current_user
 
 @login_manager.user_loader
 def load_user(userid):
-    return SuperAdmin.query.get(int(userid))
+    return Admin.query.get(int(userid))
 
 
 @app.route('/')
@@ -15,28 +15,18 @@ def load_user(userid):
 def home():
     return render_template('home.html')
 
-@app.route('/super_admin_login', methods = ["GET", "POST"])
-def super_admin_login():
+@app.route('/admins_login', methods = ["GET", "POST"])
+def admins_login():
     form = LoginForm()
     if form.validate_on_submit():
         username = form.username.data
-        user = SuperAdmin.get_by_username(username)
+        user = Admins.get_by_username(username)
         if user is not None and user.check_password(form.password.data):
             login_user(user)
-            flash("Signed in successfully as {} <SuperAdmin User>".format(username))
+            flash("Signed in successfully as {} >".format(username))
             return redirect(request.args.get('next') or url_for('super_admin'))
         flash("Wrong username or password")
-    return render_template('super_admin_login.html', form = form)
-
-
-@app.route('/admin_login', methods = ["GET", "POST"])
-def admin_login():
-    form = LoginForm()
-    if form.validate_on_submit():
-        username = form.username.data
-        flash("Signed in successfully as {}  <Admin User>".format(username))
-        return redirect(request.args.get('next') or url_for('admin'))
-    return render_template('admin_login.html', form = form)
+    return render_template('admins_login.html', form = form)
 
 
 @app.route('/user_login', methods = ["GET", "POST"])

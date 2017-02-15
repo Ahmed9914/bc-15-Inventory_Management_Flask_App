@@ -19,3 +19,5 @@ class BaseUser(UserMixin):
 
     def __repr__(self):
         return self.username
+
+    

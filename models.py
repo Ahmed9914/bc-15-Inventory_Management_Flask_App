@@ -13,27 +13,15 @@ class Assets(db.Model):
     def __repr__(self):
         return "<Asset '{}': '{}' >".format(self.name, self.serial_code)
 
-class SuperAdmin(db.Model, BaseUser):
+class Admins(db.Model, BaseUser):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(80), unique=True)
     password_hash = db.Column(db.String)
 
     @staticmethod
     def get_by_username(username):
-        return SuperAdmin.query.filter_by(username=username).first()
+        return Admins.query.filter_by(username=username).first()
 
-
-class Admin(db.Model, BaseUser):
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(80), unique=True)
-    password_hash = db.Column(db.String)
-
-    @staticmethod
-    def get_by_username(username):
-        return Admin.query.filter_by(username=username).first()
-
-    def __repr__(self):
-        return '<Admin: %r>' %self.username
 
 class User(db.Model, BaseUser):
     id = db.Column(db.Integer, primary_key=True)
@@ -43,9 +31,6 @@ class User(db.Model, BaseUser):
     @staticmethod
     def get_by_username(username):
         return User.query.filter_by(username=username).first()
-
-    def __repr__(self):
-        return '<User: %r>' %self.username
 
 class Cases(db.Model):
     id = db.Column(db.Integer, primary_key=True)
