@@ -162,9 +162,25 @@ def unassign_asset():
                 flash("Successfully unassigned {} from {}".format(asset_name, user_assigned))
                 return redirect(url_for('admin'))
             else:
-                flash("{} is not yet asigned".format(asset_name))
+                flash("ERROR!!! {} is not yet asigned".format(asset_name))
                 return redirect(url_for('unassign_asset'))
         else:
-            flash("{} does not exist".format(asset_name))
+            flash("ERROR!! {} does not exist".format(asset_name))
             return redirect(url_for('unassign_asset'))
     return render_template('unassign_asset.html', form = form)
+
+
+@app.route('/admin/list_assigned')
+@login_required
+def list_assigned():
+    result = []
+    list_assigned = Assets.query.filter(Assets.user_assigned != None)
+    for asset in list_assigned:
+        asset_name = asset.asset_name
+        user_assigned = asset.user_assigned
+        result.append([asset_name, user_assigned])
+    return render_template('list_assigned.html', lst=result)
+
+
+
+    #asset = Assets.query.filter_by(asset_name=asset_name).first()

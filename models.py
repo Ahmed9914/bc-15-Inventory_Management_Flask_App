@@ -12,7 +12,7 @@ class Assets(db.Model):
     user_assigned = db.Column(db.String(10))
 
     def __repr__(self):
-        return "<Asset '{}': '{}' >".format(self.name, self.serial_code)
+        return self.asset_name
 
 class Admins(db.Model, BaseUser):
     id = db.Column(db.Integer, primary_key=True)
