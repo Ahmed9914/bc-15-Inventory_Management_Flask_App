@@ -9,9 +9,10 @@ class LoginForm(Form):
     create = SubmitField('Create Account: ')
 
 class UserForm(Form):
-    user_name = StringField('Username: ', validators=[DataRequired()])
-    first_name = StringField('First Name: ', validators=[DataRequired()])
-    last_name = StringField('Last Name: ', validators=[DataRequired()])
+    username = StringField('Username: ', validators=[DataRequired()])
+    first_name = StringField('First Name: ')
+    last_name = StringField('Last Name: ')
+    submit = SubmitField('Sign In: ')
     create = SubmitField('Create Account: ')
 
 class AssetForm(Form):

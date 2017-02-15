@@ -34,11 +34,15 @@ def admins_login():
 
 @app.route('/user_login', methods = ["GET", "POST"])
 def user_login():
-    form = LoginForm()
+    form = UserForm()
     if form.validate_on_submit():
         username = form.username.data
-        flash("Signed in successfully as {} <User>".format(username))
-        return redirect(request.args.get('next') or url_for('home'))
+        user = User.get_by_username(username)
+        if user is not None:
+            login_user(user)       
+            flash("Signed in successfully as {} ".format(username))
+            return redirect(request.args.get('next') or url_for('user'))
+        flash("Wrong username")
     return render_template('user_login.html', form = form)
 
 
@@ -55,10 +59,12 @@ def super_admin():
         return redirect(request.args.get('next') or url_for('super_admin'))
     return render_template('super_admin.html', form = form)
 
+
 @app.route('/admin')
 @login_required
 def admin():
     return render_template("admin.html")
+
 
 @app.route('/admin/add_asset', methods = ["GET", "POST"])
 @login_required
@@ -79,6 +85,7 @@ def add_asset():
         return redirect(url_for('admin'))
     return render_template('add_asset.html', form = form)
 
+
 @app.route('/admin/add_user', methods = ["GET", "POST"])
 @login_required
 def add_user():
@@ -95,9 +102,14 @@ def add_user():
     return render_template('add_user.html', form = form)
 
 
-
 @app.route("/sign_out")
 def sign_out():
     logout_user()
     flash("You have now signed out")
     return redirect(url_for('home'))
+
+
+@app.route('/user')
+@login_required
+def user():
+    return render_template("user.html")
