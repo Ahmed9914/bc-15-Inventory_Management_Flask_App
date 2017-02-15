@@ -50,6 +50,7 @@ def user_login():
 
 
 @app.route('/super_admin', methods = ["GET", "POST"])
+@login_required
 def super_admin():
     form = LoginForm()
     if form.validate_on_submit():
@@ -62,10 +63,12 @@ def super_admin():
     return render_template('super_admin.html', form = form)
 
 @app.route('/admin')
+@login_required
 def admin():
     return render_template("admin.html")
 
 @app.route('/admin/add_asset', methods = ["GET", "POST"])
+@login_required
 def add_asset():
     form = AssetForm()
     if form.validate_on_submit():
