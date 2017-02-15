@@ -8,6 +8,12 @@ class LoginForm(Form):
     submit = SubmitField('Sign In: ')
     create = SubmitField('Create Account: ')
 
+class UserForm(Form):
+    user_name = StringField('Username: ', validators=[DataRequired()])
+    first_name = StringField('First Name: ', validators=[DataRequired()])
+    last_name = StringField('Last Name: ', validators=[DataRequired()])
+    create = SubmitField('Create Account: ')
+
 class AssetForm(Form):
     asset_name = StringField('Asset name: ', validators=[DataRequired()])
     description = StringField('Asset description: ', validators=[DataRequired()])

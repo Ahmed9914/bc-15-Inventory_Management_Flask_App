@@ -1,6 +1,6 @@
 from __init__ import app, db, login_manager
 from flask import render_template, url_for, request, redirect, flash
-from forms import LoginForm, AssetForm
+from forms import LoginForm, AssetForm, UserForm
 from models import *
 from flask_login import login_required, login_user,logout_user, current_user
 
@@ -78,6 +78,23 @@ def add_asset():
         flash("Successfully added {} to the records".format(asset_name))
         return redirect(url_for('admin'))
     return render_template('add_asset.html', form = form)
+
+@app.route('/admin/add_user', methods = ["GET", "POST"])
+@login_required
+def add_user():
+    form = UserForm()
+    if form.validate_on_submit():
+        user_name = form.user_name.data
+        first_name = form.first_name.data
+        last_name = form.last_name.data
+        db.session.add(User(user_name=user_name, first_name=first_name,
+                            last_name=last_name))
+        db.session.commit()
+        flash("Successfully added {} to Users".format(user_name))
+        return redirect(url_for('admin'))
+    return render_template('add_user.html', form = form)
+
+
 
 @app.route("/sign_out")
 def sign_out():

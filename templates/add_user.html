@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% from "form_macros.html" import render_field %}
+
+{% block title %}
+ADD USER
+{% endblock %}
+
+
+{% block content %}
+    <article>
+        <h2>FILL IN DETAILS OF THE USER TO BE ADDED</h2>
+        <form action="" method="post">
+            {{ form.hidden_tag() }}
+            <table>
+                {{ render_field(form.user_name, size=50) }}
+                {{ render_field(form.first_name, size=50) }}
+                {{ render_field(form.last_name, size=50) }}
+                {{ render_field(form.create, size=50) }}
+             
+            </table>
+        </form>
+    </article>
+{% endblock %}
+{% block sidebar %}
+{% endblock %}
