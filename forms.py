@@ -26,7 +26,7 @@ class AssetForm(Form):
     
 class AssignForm(Form):
     asset_name = StringField('Asset name: ', validators=[DataRequired()])
-    user_assigned = StringField('User to be assigned: ', validators=[DataRequired()])
+    user_assigned = StringField('User to be assigned: ')
     assign = SubmitField('Assign asset: ')
     unassign = SubmitField('Unassign asset: ')
 

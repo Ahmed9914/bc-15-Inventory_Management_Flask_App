@@ -2,20 +2,19 @@
 {% from "form_macros.html" import render_field %}
 
 {% block title %}
-ASSIGN ASSET
+UN-ASSIGN ASSET
 {% endblock %}
 
 
 {% block content %}
     <article>
-        <h2>ASSIGN AN ASSET</h>
-        <h3>CHOOSE THE ASSET TO ASSIGN AND THE USER TO BE ASSIGNED BELOW</h3>
+        <h2>UN-ASSIGN AN ASSET</h>
+        <h3>CHOOSE THE ASSET TO BE UN ASSIGNED BELOW</h3>
         <form action="" method="post">
             {{ form.hidden_tag() }}
             <table>
                 {{ render_field(form.asset_name, size=50) }}
-                {{ render_field(form.user_assigned, size=50) }}
-                {{ render_field(form.assign, size=50) }}             
+                {{ render_field(form.unassign, size=50) }}             
             </table>
         </form>
     </article>

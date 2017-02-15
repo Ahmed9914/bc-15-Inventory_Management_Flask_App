@@ -142,3 +142,25 @@ def assign_asset():
             flash("{} or  {} does not exist".format(asset_name, user_assigned))
             return redirect(url_for('assign_asset'))
     return render_template('assign_asset.html', form = form)
+
+@app.route('/admin/unassign_asset', methods = ["GET", "POST"])
+@login_required
+def unassign_asset():
+    form = AssignForm()
+    if form.validate_on_submit():
+        asset_name = form.asset_name.data
+        asset = Assets.query.filter_by(asset_name=asset_name).first()
+        if asset is not None:
+            user_assigned = asset.user_assigned
+            if user_assigned is not None:
+                asset.user_assigned = None
+                db.session.commit()
+                flash("Successfully unassigned {} from {}".format(asset_name, user_assigned))
+                return redirect(url_for('admin'))
+            else:
+                flash("{} is not yet asigned".format(asset_name))
+                return redirect(url_for('unassign_asset'))
+        else:
+            flash("{} does not exist".format(asset_name))
+            return redirect(url_for('unassign_asset'))
+    return render_template('unassign_asset.html', form = form)
