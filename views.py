@@ -4,10 +4,14 @@ from forms import LoginForm, AssetForm, UserForm
 from models import *
 from flask_login import login_required, login_user,logout_user, current_user
 
+current_user_type = ""
 
 @login_manager.user_loader
 def load_user(userid):
-    return Admins.query.get(int(userid))
+    if current_user_type == 'Admin':
+        return Admins.query.get(int(userid))
+    elif current_user_type == 'User':
+        return User.query.get(int(userid))
 
 
 @app.route('/')
@@ -17,8 +21,10 @@ def home():
 
 @app.route('/admins_login', methods = ["GET", "POST"])
 def admins_login():
+    global current_user_type
     form = LoginForm()
     if form.validate_on_submit():
+        current_user_type = 'Admin'
         username = form.username.data
         user = Admins.get_by_username(username)
         if user is not None and user.check_password(form.password.data):
@@ -28,12 +34,14 @@ def admins_login():
                 return redirect(request.args.get('next') or url_for('super_admin'))
             else:
                 return redirect(request.args.get('next') or url_for('admin'))
+            
         flash("Wrong username or password")
     return render_template('admins_login.html', form = form)
 
 
 @app.route('/user_login', methods = ["GET", "POST"])
 def user_login():
+    global current_user_type
     form = UserForm()
     if form.validate_on_submit():
         username = form.username.data
@@ -41,6 +49,7 @@ def user_login():
         if user is not None:
             login_user(user)       
             flash("Signed in successfully as {} ".format(username))
+            current_user_type = 'User'
             return redirect(request.args.get('next') or url_for('user'))
         flash("Wrong username")
     return render_template('user_login.html', form = form)
@@ -91,10 +100,10 @@ def add_asset():
 def add_user():
     form = UserForm()
     if form.validate_on_submit():
-        user_name = form.user_name.data
+        user_name = form.username.data
         first_name = form.first_name.data
         last_name = form.last_name.data
-        db.session.add(User(user_name=user_name, first_name=first_name,
+        db.session.add(User(username=user_name, first_name=first_name,
                             last_name=last_name))
         db.session.commit()
         flash("Successfully added {} to Users".format(user_name))
