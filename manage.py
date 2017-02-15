@@ -9,7 +9,7 @@ manager = Manager(app)
 @manager.command
 def initdb():
     db.create_all()
-    db.session.add(SuperAdmin(username="sAdmin", password_hash="123"))
+    db.session.add(SuperAdmin(username="sAdmin", password_hash="Admin"))
     db.session.commit()
     print('Successfully created the database')
 
