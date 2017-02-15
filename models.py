@@ -4,11 +4,12 @@ from __init__ import db
 class Assets(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     asset_name = db.Column(db.Text, nullable=False)
-    description = db.Column(db.String(300))
-    serial_no = db.Column(db.String(10))
-    serial_code = db.Column(db.String(10))
+    description = db.Column(db.String(300), nullable=False)
+    serial_no = db.Column(db.String(10), nullable=False)
+    serial_code = db.Column(db.String(10), nullable=False)
     colour = db.Column(db.String(10))
-    date_bought = db.Column(db.String(10)) #yyyy-mm-dd format
+    date_bought = db.Column(db.String(10), nullable=False) #yyyy-mm-dd format
+    user_assigned = db.Column(db.String(10))
 
     def __repr__(self):
         return "<Asset '{}': '{}' >".format(self.name, self.serial_code)
