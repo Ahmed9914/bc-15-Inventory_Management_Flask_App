@@ -87,7 +87,7 @@ def add_asset():
     return render_template('add_asset.html', form = form)
 
 @app.route("/sign_out")
-@login_required
 def sign_out():
     logout_user()
+    flash("You have now signed out")
     return redirect(url_for('home'))
