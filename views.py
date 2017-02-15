@@ -13,8 +13,15 @@ def super_admin_login():
     form = LoginForm()
     if form.validate_on_submit():
         username = form.username.data
-        flash("Signed in successfully as {} <SuperAdmin User>".format(username))
-        return redirect(request.args.get('next') or url_for('super_admin'))
+        password = form.password.data
+        user = SuperAdmin.query.get(1)
+        pswd = SuperAdmin.query.get(2)
+        if str(user) == username:
+            flash("Signed in successfully as {} <SuperAdmin User>".format(username))
+            return redirect(request.args.get('next') or url_for('super_admin'))
+        else:
+            flash("{} is not a SuperAdmin User".format(username))
+            return redirect(url_for('home'))
     return render_template('super_admin_login.html', form = form)
 
 
