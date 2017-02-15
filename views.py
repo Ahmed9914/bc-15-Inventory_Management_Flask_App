@@ -1,7 +1,14 @@
-from __init__ import app, db
+from __init__ import app, db, login_manager
 from flask import render_template, url_for, request, redirect, flash
 from forms import LoginForm, AssetForm
 from models import *
+from flask_login import login_required, login_user,logout_user, current_user
+
+
+@login_manager.user_loader
+def load_user(userid):
+    return SuperAdmin.query.get(int(userid))
+
 
 @app.route('/')
 @app.route('/home')
@@ -13,15 +20,12 @@ def super_admin_login():
     form = LoginForm()
     if form.validate_on_submit():
         username = form.username.data
-        password = form.password.data
-        user = SuperAdmin.query.get(1)
-        pswd = SuperAdmin.query.get(2)
-        if str(user) == username:
+        user = SuperAdmin.get_by_username(username)
+        if user is not None and user.check_password(form.password.data):
+            login_user(user)
             flash("Signed in successfully as {} <SuperAdmin User>".format(username))
             return redirect(request.args.get('next') or url_for('super_admin'))
-        else:
-            flash("{} is not a SuperAdmin User".format(username))
-            return redirect(url_for('home'))
+        flash("Wrong username or password")
     return render_template('super_admin_login.html', form = form)
 
 

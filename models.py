@@ -1,4 +1,4 @@
-from __init__ import db, login
+from __init__ import db
 from flask_login import UserMixin
 from werkzeug.security import check_password_hash, generate_password_hash
 
@@ -19,7 +19,7 @@ class SuperAdmin(db.Model, UserMixin):
     username = db.Column(db.String(80), unique=True)
     password_hash = db.Column(db.String)
 
-@property
+    @property
     def password(self):
         raise AttributeError('password: write-only field')
 
@@ -35,7 +35,7 @@ class SuperAdmin(db.Model, UserMixin):
 
     @staticmethod
     def get_by_username(username):
-        return User.query.filter_by(username=username).first()
+        return SuperAdmin.query.filter_by(username=username).first()
 
 
     def __repr__(self):

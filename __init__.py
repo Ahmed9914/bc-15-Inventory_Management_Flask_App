@@ -18,7 +18,7 @@ db = SQLAlchemy(app)
 #configure authentication
 login_manager = LoginManager()
 login_manager.session_protection = "strong"
-login_manager.login_view = "super_admin_login"
+login_manager.login_view = "home"
 login_manager.init_app(app)
 
 import views
