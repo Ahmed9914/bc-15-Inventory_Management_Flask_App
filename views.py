@@ -182,5 +182,16 @@ def list_assigned():
     return render_template('list_assigned.html', lst=result)
 
 
+@app.route('/admin/list_unassigned')
+@login_required
+def list_unassigned():
+    result = []
+    list_unassigned = Assets.query.filter(Assets.user_assigned == None)
+    for asset in list_unassigned:
+        asset_name = asset.asset_name
+        description = asset.description
+        result.append([asset_name, description])
+    return render_template('list_unassigned.html', lst=result)
 
-    #asset = Assets.query.filter_by(asset_name=asset_name).first()
+
+

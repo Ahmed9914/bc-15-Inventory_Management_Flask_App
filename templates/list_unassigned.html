@@ -2,20 +2,20 @@
 {% from "form_macros.html" import render_field %}
 
 {% block title %}
-LIST-ASSIGNED
+LIST-UNASSIGNED
 {% endblock %}
 
 {% block content %}
 <section>
-            <h2>LIST OF ASSIGNED ASSETS AND THE ASIGNEES</h2>
+            <h2>LIST OF AVAILABLE ASSETS </h2>
             {% if lst %}
                 <ol>
                     {% for l in lst %}
-                        <li> {{ l[0] }} was assigned to {{ l[1] }}</li>
+                        <li> <strong>ASSET NAME:</strong> {{ l[0] }}<br> <strong>DESCRIPTION:</strong> {{ l[1] }}</li>
                     {% endfor %}
                 </ol>
             {% else %}
-                THERE ARE CURRENTLY NO ASSIGNED ASSETS
+                THERE ARE CURRENTLY NO AVAILABLE ASSETS
             {% endif %}
         </section>
 <a href="{{ url_for('admin') }}">BACK</a>
