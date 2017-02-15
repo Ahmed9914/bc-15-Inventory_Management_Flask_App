@@ -134,10 +134,14 @@ def assign_asset():
         asset = Assets.query.filter_by(asset_name=asset_name).first()
         user = User.get_by_username(user_assigned)
         if user is not None and asset is not None:
-            asset.user_assigned = user_assigned
-            db.session.commit()
-            flash("Successfully assigned {} to {}".format(asset_name, user_assigned))
-            return redirect(url_for('admin'))
+            if asset.user_assigned is not None:
+                flash("ERROR!! {} is already assigned to some one else".format(asset_name, asset.user_assigned ))
+                return redirect(url_for('admin'))
+            else:
+                asset.user_assigned = user_assigned
+                db.session.commit()
+                flash("Successfully assigned {} to {}".format(asset_name, user_assigned))
+                return redirect(url_for('admin'))
         else:
             flash("{} or  {} does not exist".format(asset_name, user_assigned))
             return redirect(url_for('assign_asset'))
