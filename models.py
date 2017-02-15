@@ -3,7 +3,7 @@ from __init__ import db
 
 class Assets(db.Model):
     id = db.Column(db.Integer, primary_key = True)
-    assetname = db.Column(db.Text, nullable=False)
+    asset_name = db.Column(db.Text, nullable=False)
     description = db.Column(db.String(300))
     serial_no = db.Column(db.String(10))
     serial_code = db.Column(db.String(10))

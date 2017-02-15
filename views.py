@@ -7,7 +7,7 @@ from flask_login import login_required, login_user,logout_user, current_user
 
 @login_manager.user_loader
 def load_user(userid):
-    return Admin.query.get(int(userid))
+    return Admins.query.get(int(userid))
 
 
 @app.route('/')
@@ -23,8 +23,11 @@ def admins_login():
         user = Admins.get_by_username(username)
         if user is not None and user.check_password(form.password.data):
             login_user(user)
-            flash("Signed in successfully as {} >".format(username))
-            return redirect(request.args.get('next') or url_for('super_admin'))
+            flash("Signed in successfully as {} ".format(username))
+            if user.username == 'sAdmin':
+                return redirect(request.args.get('next') or url_for('super_admin'))
+            else:
+                return redirect(request.args.get('next') or url_for('admin'))
         flash("Wrong username or password")
     return render_template('admins_login.html', form = form)
 
@@ -46,7 +49,7 @@ def super_admin():
     if form.validate_on_submit():
         username = form.username.data
         password = form.password.data
-        db.session.add(Admin(username=username, password_hash=password))
+        db.session.add(Admins(username=username, password=password))
         db.session.commit()
         flash("Successfully created {} as Admin".format(username))
         return redirect(request.args.get('next') or url_for('super_admin'))
