@@ -21,6 +21,14 @@ class AssetForm(Form):
     serial_no = StringField('Serial Number: ', validators=[DataRequired()])
     serial_code = StringField('Serial Code: ', validators=[DataRequired()])
     date_bought = StringField('Bought on: ', validators=[DataRequired()])
-    colour = StringField('Color(optional): ')
+    colour = StringField('Color(optional): ')    
     add = SubmitField('Add asset: ')
+    
+class AssignForm(Form):
+    asset_name = StringField('Asset name: ', validators=[DataRequired()])
+    user_assigned = StringField('User to be assigned: ', validators=[DataRequired()])
+    assign = SubmitField('Assign asset: ')
+    unassign = SubmitField('Unassign asset: ')
+
+
 

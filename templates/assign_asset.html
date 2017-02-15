@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% from "form_macros.html" import render_field %}
+
+{% block title %}
+ASSIGN ASSET
+{% endblock %}
+
+
+{% block content %}
+    <article>
+        <h2>CHOOSE THE ASSET TO ASSIGN AND THE USER TO BE ASSIGNED BELOW</h2>
+        <form action="" method="post">
+            {{ form.hidden_tag() }}
+            <table>
+                {{ render_field(form.asset_name, size=50) }}
+                {{ render_field(form.user_assigned, size=50) }}
+                {{ render_field(form.assign, size=50) }}
+             
+            </table>
+        </form>
+    </article>
+{% endblock %}
+{% block sidebar %}
+{% endblock %}

@@ -1,6 +1,6 @@
 from __init__ import app, db, login_manager
 from flask import render_template, url_for, request, redirect, flash
-from forms import LoginForm, AssetForm, UserForm
+from forms import LoginForm, AssetForm, UserForm, AssignForm
 from models import *
 from flask_login import login_required, login_user,logout_user, current_user
 
@@ -122,3 +122,23 @@ def sign_out():
 @login_required
 def user():
     return render_template("user.html")
+
+
+@app.route('/admin/assign_asset', methods = ["GET", "POST"])
+@login_required
+def assign_asset():
+    form = AssignForm()
+    if form.validate_on_submit():
+        asset_name = form.asset_name.data
+        user_assigned = form.user_assigned.data
+        asset = Assets.query.filter_by(asset_name=asset_name).first()
+        user = User.get_by_username(user_assigned)
+        if user is not None and asset is not None:
+            asset.user_assigned = user_assigned
+            db.session.commit()
+            flash("Successfully assigned {} to {}".format(asset_name, user_assigned))
+            return redirect(url_for('admin'))
+        else:
+            flash("{} or  {} does not exist".format(asset_name, user_assigned))
+            return redirect(url_for('assign_asset'))
+    return render_template('assign_asset.html', form = form)
