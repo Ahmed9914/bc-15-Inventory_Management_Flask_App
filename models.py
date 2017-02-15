@@ -25,8 +25,9 @@ class Admins(db.Model, BaseUser):
 
 class User(db.Model, BaseUser):
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(80), unique=True)
-    password_hash = db.Column(db.String)
+    user_name = db.Column(db.String(30), unique=True)
+    first_name = db.Column(db.String(30))
+    last_name = db.Column(db.String(30))
 
     @staticmethod
     def get_by_username(username):
