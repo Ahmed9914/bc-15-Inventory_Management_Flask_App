@@ -30,5 +30,9 @@ class AssignForm(Form):
     assign = SubmitField('Assign asset: ')
     unassign = SubmitField('Unassign asset: ')
 
-
+class CaseForm(Form):
+    asset_name = StringField('Asset Name: ', validators=[DataRequired()])
+    serial_num = StringField('Serial Num: ', validators=[DataRequired()])
+    report_lost = SubmitField('Report As Lost: ')
+    report_found = SubmitField('Report As Found: ')
 

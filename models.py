@@ -36,9 +36,9 @@ class User(db.Model, BaseUser):
 
 class Cases(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    case_description = db.Column(db.String(300))
-    case_item = db.Column(db.String(10))
-    case_type = db.Column(db.String(10))
+    asset_name = db.Column(db.String(10))
+    serial_num = db.Column(db.String(10))
+    case_type = db.Column(db.String(5))
 
     def __repr__(self):
         return '<Case: %r>' %self.case_type

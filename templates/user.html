@@ -2,19 +2,23 @@
 {% from "form_macros.html" import render_field %}
 
 {% block title %}
-USER
+REPORT CASE
 {% endblock %}
 
 {% block content %}
 <article>
-    <h3> CHOOSE ONE OF THE FOLLOWING ACTIONS BELOW </h3>
-
-    <ul>
-        <li><a href="#">REPORT CASE OF LOST ITEM</a></li>   
-        <li><a href="#">REPORT CASE OF LOST AND FOUND ITEM</a></li>
-
-    </ul>
-</article>
+        <h2>REPORT A CASE</h2>
+        <form action="" method="post">
+            {{ form.hidden_tag() }}
+            <table>
+                {{ render_field(form.asset_name, size=30) }}
+                {{ render_field(form.serial_num, size=30) }}
+                {{ render_field(form.report_lost, size=50) }}
+                {{ render_field(form.report_found, size=50) }}
+             
+            </table>
+        </form>
+    </article>
 
 {% endblock %}
 {% block sidebar %}
