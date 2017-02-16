@@ -166,12 +166,25 @@ def user():
         if form.report_lost.data:
             db.session.add(Cases(asset_name=asset_name,serial_num=serial_num,
                                  case_type="LOST", reported_by=current_user.username))
+            c1 = Cases(asset_name='SONY TV',serial_num='812472',
+                                 case_type="LOST", reported_by=current_user.username)
+
+            c2 = Cases(asset_name='MACBOOK-02',serial_num='90645',
+                                 case_type="LOST", reported_by=current_user.username)
+            c3 = Cases(asset_name='MACBOOK-03',serial_num='92365',
+                                 case_type="LOST", reported_by=current_user.username)
+            db.session.add(c1)
+            db.session.add(c2)
+            db.session.add(c3)
             db.session.commit()
             flash("Your case of LOST {} has been recorded".format(asset_name))
             return redirect(url_for('user'))
         elif form .report_found.data:
             db.session.add(Cases(asset_name=asset_name,serial_num=serial_num,
                                  case_type="FOUND", reported_by=current_user.username))
+            c4 = Cases(asset_name='IPHONE',serial_num='1234',
+                                 case_type="FOUND", reported_by=current_user.username)
+            db.session.add(c4) 
             db.session.commit()
             flash("Your case of FOUND {} has been recorded".format(asset_name))
             return redirect(url_for('user'))

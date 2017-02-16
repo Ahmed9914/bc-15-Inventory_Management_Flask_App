@@ -1,2 +1,1 @@
-<process type>: <command>
-web: python __init__
+web: python manage.py runserver
