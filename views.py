@@ -142,11 +142,15 @@ def add_user():
         user_name = form.username.data
         first_name = form.first_name.data
         last_name = form.last_name.data
-        db.session.add(User(username=user_name, first_name=first_name,
-                            last_name=last_name))
-        db.session.commit()
-        flash("Successfully added {} to Users".format(user_name))
-        return redirect(url_for('admin'))
+        if not User.query.filter_by(username=user_name).first():
+            db.session.add(User(username=user_name, first_name=first_name,
+                                last_name=last_name))
+            db.session.commit()
+            flash("Successfully added {} to Users".format(user_name))
+            return redirect(url_for('admin'))
+        else:
+            flash("{} already exists".format(user_name))
+            return redirect(url_for('admin'))
     return render_template('add_user.html', form = form)
 
 
