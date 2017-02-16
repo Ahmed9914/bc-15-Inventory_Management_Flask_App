@@ -10,8 +10,17 @@ manager = Manager(app)
 def initdb():
     db.create_all()
     db.session.add(Admins(username="sAdmin", password="Admin"))
-    db.session.add(Admins(username="A", password="A"))
-    db.session.add(User(username="u"))
+    db.session.add(Admins(username="Robin", password="1"))
+    db.session.add(Admins(username="Joe", password="1"))
+    db.session.add(Admins(username="Sharon", password="1"))
+    db.session.add(Admins(username="Eze", password="1"))
+    db.session.add(Admins(username="JXN", password="1"))
+    db.session.add(User(username="csharon"))
+    db.session.add(User(username="kkevin"))
+    db.session.add(User(username="jokal"))
+    db.session.add(User(username="ahart"))
+    db.session.add(User(username="bscott"))
+    db.session.add(User(username="mherbert"))
     db.session.commit()
     print('Successfully created the database')
 
@@ -24,3 +33,6 @@ def dropdb():
 
 if __name__ == "__main__":
     manager.run()
+    app.debug = True
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host='0.0.0.0', port=port)

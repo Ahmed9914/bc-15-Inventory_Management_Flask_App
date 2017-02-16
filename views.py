@@ -39,7 +39,6 @@ def home():
 @app.route('/admins_login', methods = ["GET", "POST"])
 def admins_login():
     global current_user_type
-    assets_due = reclaim()
     form = LoginForm()
     if form.validate_on_submit():
         current_user_type = 'Admin'
@@ -47,15 +46,13 @@ def admins_login():
         user = Admins.get_by_username(username)
         if user is not None and user.check_password(form.password.data):
             login_user(user)
-            if assets_due is not None and current_user != "sAdmin":
-                flash("THERE ARE NEW ASSETS TO BE RECLAIMED SOON")
             if user.username == 'sAdmin':
                 return redirect(request.args.get('next') or url_for('super_admin'))
             else:
                 return redirect(request.args.get('next') or url_for('admin'))
             
         flash("Wrong username or password")
-    return render_template('admins_login.html', form = form, assets_due = assets_due)
+    return render_template('admins_login.html', form = form)
 
 
 @app.route('/user_login', methods = ["GET", "POST"])
@@ -107,6 +104,30 @@ def add_asset():
         db.session.add(Assets(asset_name=asset_name, description=description,
                                 serial_no=serial_no, serial_code=serial_code,
                                 colour=colour, date_bought=date_bought))
+        a1 = Assets(asset_name='MACBOOK-01', description='LAPTOP COMPUTER',
+                                serial_no='12345', serial_code='AND-L',
+                                colour='WHITE', date_bought='2016-12-03')
+        a2 = Assets(asset_name='MACBOOK-03', description='LAPTOP COMPUTER',
+                                serial_no='92365', serial_code='AND-L',
+                                colour='BLACK', date_bought='2015-12-05')
+        a3 = Assets(asset_name='MACBOOK-02', description='LAPTOP COMPUTER',
+                                serial_no='90645', serial_code='AND-L',
+                                date_bought='2015-07-03')
+        a4 = Assets(asset_name='MACBOOK-03', description='LAPTOP COMPUTER',
+                                serial_no='023345', serial_code='AND-L',
+                                colour='WHITE', date_bought='2014-02-05')
+        a5 = Assets(asset_name='ROUTER', description='WIRELESS ROUTER',
+                                serial_no='90972', serial_code='AND-R',
+                                date_bought='2015-05-14')
+        a6 = Assets(asset_name='SONY TV', description='FLAT SCREEN TV',
+                                serial_no='812472', serial_code='AND-T',
+                                date_bought='2016-12-14')
+        db.session.add(a1)
+        db.session.add(a2)
+        db.session.add(a3)
+        db.session.add(a4)
+        db.session.add(a5)
+        db.session.add(a6)
         db.session.commit()
         flash("Successfully added {} to the records".format(asset_name))
         return redirect(url_for('admin'))
