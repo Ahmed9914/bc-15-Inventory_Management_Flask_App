@@ -126,12 +126,14 @@ def user():
     serial_num = form.serial_num.data
     if form.validate_on_submit():
         if form .report_lost.data:
-            db.session.add(Cases(asset_name=asset_name,serial_num=serial_num,case_type="LOST"))
+            db.session.add(Cases(asset_name=asset_name,serial_num=serial_num,
+                                 case_type="LOST", reported_by=current_user.username))
             db.session.commit()
             flash("Your case of LOST {} has been recorded".format(asset_name))
             return redirect(url_for('user'))
         elif form .report_found.data:
-            db.session.add(Cases(asset_name=asset_name,serial_num=serial_num,case_type="FOUND"))
+            db.session.add(Cases(asset_name=asset_name,serial_num=serial_num,
+                                 case_type="FOUND", reported_by=current_user.username))
             db.session.commit()
             flash("Your case of FOUND {} has been recorded".format(asset_name))
             return redirect(url_for('user'))

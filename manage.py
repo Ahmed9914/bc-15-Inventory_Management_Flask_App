@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 from __init__ import app, db
 from flask.ext.script import Manager, prompt_bool
-from models import Admins
+from models import Admins, User
 
 #assign manager variable to Manager function with app passesd to it
 manager = Manager(app)
@@ -10,6 +10,8 @@ manager = Manager(app)
 def initdb():
     db.create_all()
     db.session.add(Admins(username="sAdmin", password="Admin"))
+    db.session.add(Admins(username="A", password="A"))
+    db.session.add(User(username="u"))
     db.session.commit()
     print('Successfully created the database')
 

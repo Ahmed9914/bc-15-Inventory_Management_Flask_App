@@ -39,6 +39,7 @@ class Cases(db.Model):
     asset_name = db.Column(db.String(10))
     serial_num = db.Column(db.String(10))
     case_type = db.Column(db.String(5))
+    reported_by = db.Column(db.String(10))
 
     def __repr__(self):
         return '<Case: %r>' %self.case_type
