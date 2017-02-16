@@ -162,7 +162,7 @@ def user():
     form = CaseForm()
     asset_name = form.asset_name.data
     serial_num = form.serial_num.data
-    if form.validate_on_submit() and Assets.query.filter_by(asset_name=asset_name).first() is not None:
+    if form.validate_on_submit():
         if form.report_lost.data:
             db.session.add(Cases(asset_name=asset_name,serial_num=serial_num,
                                  case_type="LOST", reported_by=current_user.username))
@@ -188,9 +188,6 @@ def user():
             db.session.commit()
             flash("Your case of FOUND {} has been recorded".format(asset_name))
             return redirect(url_for('user'))
-    else:
-        flash("WRONG ASSET DETAILS ENTERED")
-        return redirect(url_for('user'))
     return render_template("user.html", form=form)
 
 
@@ -282,9 +279,4 @@ def list_cases():
             resolve_case(asset_name)
             flash("Case Resolved Successfully")
             return redirect(url_for('list_cases'))
-    return render_template('list_cases.html', lst=result, form=form, resolve_case=resolve_case)
-
-
-
-
-
+    return render_template('list_cases.html', lst=result, form=form)
