@@ -147,6 +147,7 @@ def assign_asset():
     if form.validate_on_submit():
         asset_name = form.asset_name.data
         user_assigned = form.user_assigned.data
+        reclaim_date = form.reclaim_date.data
         asset = Assets.query.filter_by(asset_name=asset_name).first()
         user = User.get_by_username(user_assigned)
         if user is not None and asset is not None:
@@ -155,6 +156,7 @@ def assign_asset():
                 return redirect(url_for('admin'))
             else:
                 asset.user_assigned = user_assigned
+                asset.reclaim_date = reclaim_date
                 db.session.commit()
                 flash("Successfully assigned {} to {}".format(asset_name, user_assigned))
                 return redirect(url_for('admin'))

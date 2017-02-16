@@ -1,5 +1,6 @@
 from base_user import BaseUser
 from __init__ import db
+from datetime import date
 
 class Assets(db.Model):
     id = db.Column(db.Integer, primary_key = True)
@@ -10,6 +11,7 @@ class Assets(db.Model):
     colour = db.Column(db.String(10))
     date_bought = db.Column(db.String(10), nullable=False) #yyyy-mm-dd format
     user_assigned = db.Column(db.String(10))
+    reclaim_date = db.Column(db.DateTime)
 
     def __repr__(self):
         return self.asset_name

@@ -1,5 +1,5 @@
 from flask_wtf import Form
-from wtforms.fields import StringField, SubmitField, PasswordField
+from wtforms.fields import StringField, SubmitField, PasswordField, DateField
 from wtforms.validators import DataRequired
 
 class LoginForm(Form):
@@ -23,10 +23,12 @@ class AssetForm(Form):
     date_bought = StringField('Bought on: ', validators=[DataRequired()])
     colour = StringField('Color(optional): ')    
     add = SubmitField('Add asset: ')
+    reclaim_date = DateField('Reclaim Date:')
     
 class AssignForm(Form):
     asset_name = StringField('Asset name: ', validators=[DataRequired()])
     user_assigned = StringField('User to be assigned: ')
+    reclaim_date = DateField('Reclaim Date:')
     assign = SubmitField('Assign asset: ')
     unassign = SubmitField('Unassign asset: ')
 
