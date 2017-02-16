@@ -210,17 +210,27 @@ def list_unassigned():
     return render_template('list_unassigned.html', lst=result)
 
 
-@app.route('/admin/list_cases')
+@app.route('/admin/list_cases', methods=["GET", "POST"])
 @login_required
 def list_cases():
     form = ResolveForm()
     result = []
     list_cases = Cases.query.all()
-    for case in list_cases:
+    for case in list_cases:       
         asset_name = case.asset_name
         case_type = case.case_type
-        reported_by = case. reported_by
+        reported_by = case.reported_by        
         result.append([asset_name, case_type, reported_by])
+    for case in list_cases:
+        if form.resolve.data:
+            case_type = case.case_type
+            reported_by = case.reported_by
+            case_id = case.id
+            entry = Cases.query.filter_by(id=case_id).first()
+            db.session.delete(entry)
+            db.session.commit()
+            flash("You have resolved case: {} {} by {}".format(case_type, asset_name, reported_by))
+            return redirect(url_for('list_cases'))
     return render_template('list_cases.html', lst=result, form=form)
 
 
