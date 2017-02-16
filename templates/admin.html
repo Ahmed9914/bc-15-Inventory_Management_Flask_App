@@ -16,7 +16,10 @@ ADMIN
         <li><a href="{{ url_for('add_user')}}">ADD A USER</a></li>
         <li><a href="{{ url_for('list_assigned') }}">VIEW A LIST OF ASSIGNED ASSETS</a></li>
         <li><a href="{{ url_for('list_unassigned') }}">VIEW A LIST OF AVAILABLE ASSETS</a></li>
-        <li><a href="{{ url_for('list_cases') }}">VIEW / RESOLVE CASES</a></li>        
+        <li><a href="{{ url_for('list_cases') }}">VIEW / RESOLVE CASES</a></li>
+        {% if assets_due is not None %}
+        <li><a href="{{ url_for('assets_due_list') }}">ASSETS DUE</a></li>
+        {% endif %}        
     </ul>
 </article>
 

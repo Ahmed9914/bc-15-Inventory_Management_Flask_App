@@ -3,8 +3,24 @@ from flask import render_template, url_for, request, redirect, flash
 from forms import *
 from models import *
 from flask_login import login_required, login_user,logout_user, current_user
+from datetime import datetime, timedelta
+
 
 current_user_type = ""
+
+def reclaim():
+    date = datetime.now()
+    allowance = date + timedelta(3)
+    reclaim_list = Assets.query.filter(Assets.reclaim_date < allowance).all()
+    return reclaim_list
+
+
+def resolve_case(arg):
+    entry = Cases.query.filter_by(asset_name=arg).first()
+    print(entry)
+    db.session.delete(entry)
+    db.session.commit()
+    return redirect(url_for('list_cases'))
 
 @login_manager.user_loader
 def load_user(userid):
@@ -19,9 +35,11 @@ def load_user(userid):
 def home():
     return render_template('home.html')
 
+
 @app.route('/admins_login', methods = ["GET", "POST"])
 def admins_login():
     global current_user_type
+    assets_due = reclaim()
     form = LoginForm()
     if form.validate_on_submit():
         current_user_type = 'Admin'
@@ -29,14 +47,15 @@ def admins_login():
         user = Admins.get_by_username(username)
         if user is not None and user.check_password(form.password.data):
             login_user(user)
-            flash("Signed in successfully as {} ".format(username))
+            if assets_due is not None and current_user != "sAdmin":
+                flash("THERE ARE NEW ASSETS TO BE RECLAIMED SOON")
             if user.username == 'sAdmin':
                 return redirect(request.args.get('next') or url_for('super_admin'))
             else:
                 return redirect(request.args.get('next') or url_for('admin'))
             
         flash("Wrong username or password")
-    return render_template('admins_login.html', form = form)
+    return render_template('admins_login.html', form = form, assets_due = assets_due)
 
 
 @app.route('/user_login', methods = ["GET", "POST"])
@@ -48,7 +67,6 @@ def user_login():
         user = User.get_by_username(username)
         if user is not None:
             login_user(user)       
-            flash("Signed in successfully as {} ".format(username))
             current_user_type = 'User'
             return redirect(request.args.get('next') or url_for('user'))
         flash("Wrong username")
@@ -114,7 +132,6 @@ def add_user():
 @app.route("/sign_out")
 def sign_out():
     logout_user()
-    flash("You have now signed out")
     return redirect(url_for('home'))
 
 
@@ -165,6 +182,7 @@ def assign_asset():
             return redirect(url_for('assign_asset'))
     return render_template('assign_asset.html', form = form)
 
+
 @app.route('/admin/unassign_asset', methods = ["GET", "POST"])
 @login_required
 def unassign_asset():
@@ -212,14 +230,6 @@ def list_unassigned():
     return render_template('list_unassigned.html', lst=result)
 
 
-
-def resolve_case(arg):
-    entry = Cases.query.filter_by(asset_name=arg).first()
-    print(entry)
-    db.session.delete(entry)
-    db.session.commit()
-    return redirect(url_for('list_cases'))
-
 @app.route('/admin/list_cases', methods=["GET", "POST"])
 @login_required
 def list_cases():
@@ -236,5 +246,8 @@ def list_cases():
             flash("Case Resolved Successfully")
             return redirect(url_for('list_cases'))
     return render_template('list_cases.html', lst=result, form=form, resolve_case=resolve_case)
+
+
+
 
 
