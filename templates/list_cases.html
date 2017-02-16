@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% from "form_macros.html" import render_field %}
+
+{% block title %}
+LIST-CASES
+{% endblock %}
+
+{% block content %}
+<section>
+            <h2>LIST OF CASES </h2>
+            {% if lst %}
+                <ol>
+                    {% for l in lst %}
+                        <li> <strong>ASSET NAME:</strong> {{ l[0] }}<br> 
+                            <strong>CASE TYPE:</strong> {{ l[1] }}<br>
+                            <strong>REPORTED BY:</strong> {{ l[2] }}</li>
+                            =============================================
+                    {% endfor %}
+                </ol>
+            {% else %}
+                THERE ARE CURRENTLY NO CASES
+            {% endif %}
+        </section>
+<a href="{{ url_for('admin') }}">BACK</a>
+{% endblock %}
+
+{% block sidebar %}
+{% endblock %}

@@ -210,4 +210,17 @@ def list_unassigned():
     return render_template('list_unassigned.html', lst=result)
 
 
+@app.route('/admin/list_cases')
+@login_required
+def list_cases():
+    result = []
+    list_cases = Cases.query.all()
+    for case in list_cases:
+        asset_name = case.asset_name
+        case_type = case.case_type
+        reported_by = case. reported_by
+        result.append([asset_name, case_type, reported_by])
+    return render_template('list_cases.html', lst=result)
+
+
 
