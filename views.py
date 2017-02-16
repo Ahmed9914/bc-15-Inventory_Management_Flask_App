@@ -125,7 +125,7 @@ def user():
     asset_name = form.asset_name.data
     serial_num = form.serial_num.data
     if form.validate_on_submit():
-        if form .report_lost.data:
+        if form.report_lost.data:
             db.session.add(Cases(asset_name=asset_name,serial_num=serial_num,
                                  case_type="LOST", reported_by=current_user.username))
             db.session.commit()
@@ -210,6 +210,14 @@ def list_unassigned():
     return render_template('list_unassigned.html', lst=result)
 
 
+
+def resolve_case(arg):
+    entry = Cases.query.filter_by(asset_name=arg).first()
+    print(entry)
+    db.session.delete(entry)
+    db.session.commit()
+    return redirect(url_for('list_cases'))
+
 @app.route('/admin/list_cases', methods=["GET", "POST"])
 @login_required
 def list_cases():
@@ -221,17 +229,10 @@ def list_cases():
         case_type = case.case_type
         reported_by = case.reported_by        
         result.append([asset_name, case_type, reported_by])
-    for case in list_cases:
         if form.resolve.data:
-            case_type = case.case_type
-            reported_by = case.reported_by
-            case_id = case.id
-            entry = Cases.query.filter_by(id=case_id).first()
-            db.session.delete(entry)
-            db.session.commit()
-            flash("You have resolved case: {} {} by {}".format(case_type, asset_name, reported_by))
+            resolve_case(asset_name)
+            flash("Case Resolved Successfully")
             return redirect(url_for('list_cases'))
-    return render_template('list_cases.html', lst=result, form=form)
-
+    return render_template('list_cases.html', lst=result, form=form, resolve_case=resolve_case)
 
 

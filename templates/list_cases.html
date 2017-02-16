@@ -6,7 +6,7 @@ LIST-CASES
 {% endblock %}
 
 {% block content %}
-<section>
+<article>
             <h2>LIST OF CASES </h2>
             {% if lst %}
                 <ol>
@@ -14,21 +14,21 @@ LIST-CASES
                         <li> <strong>ASSET NAME:</strong> {{ l[0] }}<br> 
                             <strong>CASE TYPE:</strong> {{ l[1] }}<br>
                             <strong>REPORTED BY:</strong> {{ l[2] }}<br>
+
                             <form action="" method="post">
                                 {{ form.hidden_tag() }}
-                                <table>
-                                    {{ render_field(form.resolve) }}           
-                                </table>
+                                {{ render_field(form.resolve, size=30) }}    
                             </form>
                         </li>
                             =============================================
                     {% endfor %}
                 </ol>
             {% else %}
-                THERE ARE CURRENTLY NO CASES
+                THERE ARE CURRENTLY NO CASES<br>
             {% endif %}
-        </section>
-<a href="{{ url_for('admin') }}">BACK</a>
+            <a href="{{ url_for('admin') }}">BACK</a>
+        </article>
+
 {% endblock %}
 
 {% block sidebar %}

@@ -37,6 +37,7 @@ class CaseForm(Form):
     report_found = SubmitField('Report As Found: ')
 
 class ResolveForm(Form):
+    text = StringField('txt')
     resolve = SubmitField('Resolve Case: ')
 
 
