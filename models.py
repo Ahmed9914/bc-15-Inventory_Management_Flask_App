@@ -39,7 +39,6 @@ class User(db.Model, BaseUser):
 class Cases(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     asset_name = db.Column(db.String(10))
-    serial_num = db.Column(db.String(10))
     case_type = db.Column(db.String(5))
     reported_by = db.Column(db.String(10))
 

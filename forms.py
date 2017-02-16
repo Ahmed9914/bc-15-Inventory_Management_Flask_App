@@ -34,7 +34,6 @@ class AssignForm(Form):
 
 class CaseForm(Form):
     asset_name = StringField('Asset Name: ', validators=[DataRequired()])
-    serial_num = StringField('Serial Number: ', validators=[DataRequired()])
     report_lost = SubmitField('Report As Lost ')
     report_found = SubmitField('Report As Found   ')
 
