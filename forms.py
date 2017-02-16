@@ -36,3 +36,7 @@ class CaseForm(Form):
     report_lost = SubmitField('Report As Lost: ')
     report_found = SubmitField('Report As Found: ')
 
+class ResolveForm(Form):
+    resolve = SubmitField('Resolve Case: ')
+
+

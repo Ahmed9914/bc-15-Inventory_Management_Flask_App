@@ -213,6 +213,7 @@ def list_unassigned():
 @app.route('/admin/list_cases')
 @login_required
 def list_cases():
+    form = ResolveForm()
     result = []
     list_cases = Cases.query.all()
     for case in list_cases:
@@ -220,7 +221,7 @@ def list_cases():
         case_type = case.case_type
         reported_by = case. reported_by
         result.append([asset_name, case_type, reported_by])
-    return render_template('list_cases.html', lst=result)
+    return render_template('list_cases.html', lst=result, form=form)
 
 
 

@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% from "form_macros.html" import render_field %}
+{% from "form_macros_two.html" import render_field %}
 
 {% block title %}
 LIST-CASES
@@ -13,7 +13,14 @@ LIST-CASES
                     {% for l in lst %}
                         <li> <strong>ASSET NAME:</strong> {{ l[0] }}<br> 
                             <strong>CASE TYPE:</strong> {{ l[1] }}<br>
-                            <strong>REPORTED BY:</strong> {{ l[2] }}</li>
+                            <strong>REPORTED BY:</strong> {{ l[2] }}<br>
+                            <form action="" method="post">
+                                {{ form.hidden_tag() }}
+                                <table>
+                                    {{ render_field(form.resolve) }}           
+                                </table>
+                            </form>
+                        </li>
                             =============================================
                     {% endfor %}
                 </ol>
