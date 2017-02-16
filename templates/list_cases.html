@@ -14,12 +14,12 @@ LIST-CASES
                         <li> <strong>ASSET NAME:</strong> {{ l[0] }}<br> 
                             <strong>CASE TYPE:</strong> {{ l[1] }}<br>
                             <strong>REPORTED BY:</strong> {{ l[2] }}<br>
-
                             <form action="" method="post">
                                 {{ form.hidden_tag() }}
                                 ==============<br>
                                 {{ render_field(form.resolve, size=30) }}    
                             </form>
+
                         </li>
                             =============================================
                     {% endfor %}
