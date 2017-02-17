@@ -164,41 +164,46 @@ def sign_out():
 @login_required
 def user():
     form = CaseForm()
-    asset_name = form.asset_name.data
     if form.validate_on_submit():
-        if form.report_lost.data:
-            if Assets.query.filter_by(asset_name=asset_name).first():
-                db.session.add(Cases(asset_name=asset_name,
-                                     case_type="LOST", reported_by=current_user.username))
-                c1 = Cases(asset_name='SONY TV',
-                                     case_type="LOST", reported_by=current_user.username)
+        asset_name = form.asset_name.data
+        asset = Assets.query.filter_by(asset_name=asset_name).first()
+        if asset is not None:
+            if asset.user_assigned is not None:
+                if form.report_lost.data:
+                    db.session.add(Cases(asset_name=asset_name,
+                                         case_type="LOST", reported_by=current_user.username))
+                    c1 = Cases(asset_name='SONY TV',
+                                         case_type="LOST", reported_by=current_user.username)
 
-                c2 = Cases(asset_name='MACBOOK-02',
-                                     case_type="LOST", reported_by=current_user.username)
-                c3 = Cases(asset_name='MACBOOK-03',
-                                     case_type="LOST", reported_by=current_user.username)
-                db.session.add(c1)
-                db.session.add(c2)
-                db.session.add(c3)
-                db.session.commit()
-                flash("Your case of LOST {} has been recorded".format(asset_name))
-                return redirect(url_for('user'))
+                    c2 = Cases(asset_name='MACBOOK-02',
+                                         case_type="LOST", reported_by=current_user.username)
+                    c3 = Cases(asset_name='MACBOOK-03',
+                                         case_type="LOST", reported_by=current_user.username)
+                    db.session.add(c1)
+                    db.session.add(c2)
+                    db.session.add(c3)
+                    db.session.commit()
+                    asset.asset_name = asset_name + '**'
+                    db.session.commit()
+                    flash("Your case of LOST {} has been recorded".format(asset_name))
+                    return redirect(url_for('user'))
+                elif form .report_found.data:
+                    db.session.add(Cases(asset_name=asset_name,
+                                         case_type="FOUND", reported_by=current_user.username))
+                    c4 = Cases(asset_name='IPHONE',
+                                         case_type="FOUND", reported_by=current_user.username)
+                    db.session.add(c4) 
+                    db.session.commit()
+                    asset_found.asset_name = asset_name + '***'
+                    db.commit()
+                    flash("Your case of FOUND {} has been recorded".format(asset_name))
+                    return redirect(url_for('user'))
             else:
-                flash("ERROR, CHECK ASSET NAME: {}".format(asset_name))
+                flash("{} IS NOT YET ASSIGNED".format(asset_name))
                 return redirect(url_for('user'))
-        elif form .report_found.data:
-            if Assets.query.filter_by(asset_name=asset_name).first():
-                db.session.add(Cases(asset_name=asset_name,
-                                     case_type="FOUND", reported_by=current_user.username))
-                c4 = Cases(asset_name='IPHONE',
-                                     case_type="FOUND", reported_by=current_user.username)
-                db.session.add(c4) 
-                db.session.commit()
-                flash("Your case of FOUND {} has been recorded".format(asset_name))
-                return redirect(url_for('user'))
-            else:
-                flash("ERROR, CHECK ASSET NAME: {}".format(asset_name))
-                return redirect(url_for('user'))
+        else:
+            flash("{} DOESNT EXIST".format(asset_name))
+            return redirect(url_for('user'))
     return render_template("user.html", form=form)
 
 
