@@ -1,4 +1,4 @@
-# INVETORY @ ANDELA
+# INVENTORY @ ANDELA
 A Flask app  to keep inventory of Andela’s asse. 
 
 
