@@ -2,6 +2,7 @@
 from __init__ import app, db
 from flask.ext.script import Manager, prompt_bool
 from models import Admins, User
+import os
 
 #assign manager variable to Manager function with app passesd to it
 manager = Manager(app)
@@ -33,4 +34,6 @@ def dropdb():
 
 if __name__ == "__main__":
     manager.run()
+    port = int(os.environ.get('PORT', 5000))
+    app.run(host='0.0.0.0', port=port, debug=True)
 

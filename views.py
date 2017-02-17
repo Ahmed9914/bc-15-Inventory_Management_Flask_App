@@ -40,6 +40,7 @@ def home():
 def admins_login():
     global current_user_type
     form = LoginForm()
+    assets_due = reclaim()
     if form.validate_on_submit():
         current_user_type = 'Admin'
         username = form.username.data
@@ -49,6 +50,9 @@ def admins_login():
             if user.username == 'sAdmin':
                 return redirect(request.args.get('next') or url_for('super_admin'))
             else:
+                if assets_due is not None:
+
+                    flash("THERE ARE NEW ASSETS TO BE RECLAIMED SOON")
                 return redirect(request.args.get('next') or url_for('admin'))
             
         flash("Wrong username or password")
@@ -170,38 +174,34 @@ def user():
         if asset is not None:
             if asset.user_assigned is not None:
                 if form.report_lost.data:
-                    if asset.user_assigned == current_user:
-                        db.session.add(Cases(asset_name=asset_name,
-                                             case_type="LOST", reported_by=current_user.username))
-                        c1 = Cases(asset_name='SONY TV',
-                                             case_type="LOST", reported_by=current_user.username)
+                    db.session.add(Cases(asset_name=asset_name,
+                                         case_type="LOST", reported_by=current_user.username))
+                    c1 = Cases(asset_name='SONY TV',
+                                         case_type="LOST", reported_by=current_user.username)
 
-                        c2 = Cases(asset_name='MACBOOK-02',
-                                             case_type="LOST", reported_by=current_user.username)
-                        c3 = Cases(asset_name='MACBOOK-03',
-                                             case_type="LOST", reported_by=current_user.username)
-                        db.session.add(c1)
-                        db.session.add(c2)
-                        db.session.add(c3)
-                        db.session.commit()
-                        asset.asset_name = asset_name + '**'
-                        db.session.commit()
-                        flash("Your case of LOST {} has been recorded".format(asset_name))
-                        return redirect(url_for('user'))
-                    else:
-                        flash("{} WAS NOT ASSIGNED TO YOU".format(asset_name))
-                        return redirect(url_for('user'))
+                    c2 = Cases(asset_name='MACBOOK-02',
+                                         case_type="LOST", reported_by=current_user.username)
+                    c3 = Cases(asset_name='MACBOOK-03',
+                                         case_type="LOST", reported_by=current_user.username)
+                    db.session.add(c1)
+                    db.session.add(c2)
+                    db.session.add(c3)
+                    db.session.commit()
+                    asset.status = 'LOST'
+                    db.session.commit()
+                    flash("Your case of LOST {} has been recorded".format(asset_name))
+                    return redirect(url_for('user'))
 
                 elif form .report_found.data:
-                    if asset.asset_name[-2:] == '**':
+                    if asset.status == 'LOST':
                         db.session.add(Cases(asset_name=asset_name,
                                              case_type="FOUND", reported_by=current_user.username))
                         c4 = Cases(asset_name='IPHONE',
                                              case_type="FOUND", reported_by=current_user.username)
                         db.session.add(c4) 
                         db.session.commit()
-                        asset_found.asset_name = asset_name + '***'
-                        db.commit()
+                        asset.status = 'FOUND'
+                        db.session.commit()
                         flash("Your case of FOUND {} has been recorded".format(asset_name))
                         return redirect(url_for('user'))
                     else:
@@ -271,7 +271,12 @@ def list_assigned():
     result = []
     list_assigned = Assets.query.filter(Assets.user_assigned != None)
     for asset in list_assigned:
-        asset_name = asset.asset_name
+        if asset.status == 'LOST':
+            asset_name = asset.asset_name + '*'
+        elif asset.status == 'FOUND':
+            asset_name = asset.asset_name + '***'
+        else:
+            asset_name = asset.asset_name 
         user_assigned = asset.user_assigned
         result.append([asset_name, user_assigned])
     return render_template('list_assigned.html', lst=result)

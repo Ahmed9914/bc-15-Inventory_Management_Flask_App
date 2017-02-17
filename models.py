@@ -12,6 +12,7 @@ class Assets(db.Model):
     date_bought = db.Column(db.String(10), nullable=False) #yyyy-mm-dd format
     user_assigned = db.Column(db.String(10))
     reclaim_date = db.Column(db.DateTime)
+    status = db.Column(db.String(5))
 
     def __repr__(self):
         return self.asset_name
