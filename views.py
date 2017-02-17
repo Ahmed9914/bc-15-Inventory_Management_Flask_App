@@ -170,34 +170,43 @@ def user():
         if asset is not None:
             if asset.user_assigned is not None:
                 if form.report_lost.data:
-                    db.session.add(Cases(asset_name=asset_name,
-                                         case_type="LOST", reported_by=current_user.username))
-                    c1 = Cases(asset_name='SONY TV',
-                                         case_type="LOST", reported_by=current_user.username)
+                    if asset.user_assigned == current_user:
+                        db.session.add(Cases(asset_name=asset_name,
+                                             case_type="LOST", reported_by=current_user.username))
+                        c1 = Cases(asset_name='SONY TV',
+                                             case_type="LOST", reported_by=current_user.username)
 
-                    c2 = Cases(asset_name='MACBOOK-02',
-                                         case_type="LOST", reported_by=current_user.username)
-                    c3 = Cases(asset_name='MACBOOK-03',
-                                         case_type="LOST", reported_by=current_user.username)
-                    db.session.add(c1)
-                    db.session.add(c2)
-                    db.session.add(c3)
-                    db.session.commit()
-                    asset.asset_name = asset_name + '**'
-                    db.session.commit()
-                    flash("Your case of LOST {} has been recorded".format(asset_name))
-                    return redirect(url_for('user'))
+                        c2 = Cases(asset_name='MACBOOK-02',
+                                             case_type="LOST", reported_by=current_user.username)
+                        c3 = Cases(asset_name='MACBOOK-03',
+                                             case_type="LOST", reported_by=current_user.username)
+                        db.session.add(c1)
+                        db.session.add(c2)
+                        db.session.add(c3)
+                        db.session.commit()
+                        asset.asset_name = asset_name + '**'
+                        db.session.commit()
+                        flash("Your case of LOST {} has been recorded".format(asset_name))
+                        return redirect(url_for('user'))
+                    else:
+                        flash("{} WAS NOT ASSIGNED TO YOU".format(asset_name))
+                        return redirect(url_for('user'))
+
                 elif form .report_found.data:
-                    db.session.add(Cases(asset_name=asset_name,
-                                         case_type="FOUND", reported_by=current_user.username))
-                    c4 = Cases(asset_name='IPHONE',
-                                         case_type="FOUND", reported_by=current_user.username)
-                    db.session.add(c4) 
-                    db.session.commit()
-                    asset_found.asset_name = asset_name + '***'
-                    db.commit()
-                    flash("Your case of FOUND {} has been recorded".format(asset_name))
-                    return redirect(url_for('user'))
+                    if asset.asset_name[-2:] == '**':
+                        db.session.add(Cases(asset_name=asset_name,
+                                             case_type="FOUND", reported_by=current_user.username))
+                        c4 = Cases(asset_name='IPHONE',
+                                             case_type="FOUND", reported_by=current_user.username)
+                        db.session.add(c4) 
+                        db.session.commit()
+                        asset_found.asset_name = asset_name + '***'
+                        db.commit()
+                        flash("Your case of FOUND {} has been recorded".format(asset_name))
+                        return redirect(url_for('user'))
+                    else:
+                        flash("{} HAS NOT BEEN REPORTED AS LOST".format(asset_name))
+                        return redirect(url_for('user'))
             else:
                 flash("{} IS NOT YET ASSIGNED".format(asset_name))
                 return redirect(url_for('user'))
