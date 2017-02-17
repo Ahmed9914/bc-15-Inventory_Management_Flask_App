@@ -11,7 +11,7 @@ A Flask app  to keep inventory of Andela’s asse.
 ## Usage
 A super admin user has credentials: Username: sAdmin, password:Admin
 The super admin can create admin users
-Admin users have the following actions:
+Admin users have the following actions
 1. Create user
 2. Add asset
 3. Assign asset to a user
